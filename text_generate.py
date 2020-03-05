@@ -20,8 +20,18 @@ from GPT2.config import GPT2Config
 from GPT2.sample import sample_sequence
 from GPT2.encoder import get_encoder
 
+# Load Model
+state_dict = torch.load(
+    "gpt2-pytorch_model.bin",
+    map_location="cpu" if not torch.cuda.is_available() else None,
+)
+enc = get_encoder()
+config = GPT2Config()
+model = GPT2LMHeadModel(config)
+model = load_weight(model, state_dict)
 
-def text_generator(state_dict, text):
+
+def text_generator(model, text):
     nsamples = 1
     batch_size = -1
     length = 200
@@ -39,11 +49,7 @@ def text_generator(state_dict, text):
     torch.cuda.manual_seed(seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Load Model
-    enc = get_encoder()
-    config = GPT2Config()
-    model = GPT2LMHeadModel(config)
-    model = load_weight(model, state_dict)
+
     model.to(device)
     model.eval()
 
@@ -75,18 +81,15 @@ def text_generator(state_dict, text):
 
 
 # Generate text
-state_dict = torch.load(
-    "gpt2-pytorch_model.bin",
-    map_location="cpu" if not torch.cuda.is_available() else None,
-)
+
 
 # Generate n random snippest of text to JSON file
 with open("generated_phrases.json", "w") as outfile:
     quotes_dict = {}
 
-    for i in range(10):
+    for i in range(50):
         input_phrase = random.choice(quotes.quote_list)
-        text = text_generator(state_dict, input_phrase)
+        text = text_generator(model,input_phrase)
         phrase_number = f'phrase_{i}'
         quotes_dict[phrase_number] = f'{input_phrase} {text}'
 

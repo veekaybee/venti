@@ -13,10 +13,8 @@ import random
 image = Image.open('venti.png')
 st.image(image, use_column_width=True)
 
-st.markdown("The startling thing is how often the founders themselves don't know.")
-st.markdown("Half the founders I talk to don't know whether they're default alive or default dead.")
 
-with open('generated_phrases.json','r') as generated_json:
+with open('fixed_generated_phrases.json','r') as generated_json:
     data = json.load(generated_json)
-    phrase = (random.choice(list(data.values())))
-    st.markdown(phrase)
+    phrase = random.choice(list(data.values()))
+    st.markdown(str(phrase))
