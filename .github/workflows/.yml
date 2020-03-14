@@ -2,7 +2,6 @@ name: Venti Deploy
 
 on: push
 
-name: Deploy to Amazon ECS
 
 jobs:
   deploy:
