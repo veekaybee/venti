@@ -9,7 +9,7 @@ image = Image.open('src/venti.png')
 st.image(image, use_column_width=True)
 
 
-with open('generated_phrases.json', 'r') as generated_json:
+with open('fixed_generated_phrases.json', 'r') as generated_json:
     data = json.load(generated_json)
     phrase = random.choice(list(data.values()))
     st.markdown(str(phrase))
