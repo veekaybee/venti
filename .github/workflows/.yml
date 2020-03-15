@@ -2,7 +2,6 @@ name: Venti Deploy
 
 on: push
 
-
 jobs:
   deploy:
     name: Deploy
